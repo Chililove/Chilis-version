@@ -46,7 +46,7 @@ public class Game {
         pub = new Room("in the hidden pub" + "\n\nToo agressive drunken dwarfs comes towards you" + "\n\nDo you want to fight them?\n");
         wizhut = new Room("in the wizards hut" + "\n\nThe wizard offers you a drink" + "\n\nDo you trust him?");
         /*yes - the wizard poisen you, loose 10 point, no - you turn down the drink, gain 10 points.*/
-        bridge = new Room("under the bridgees" + "\n\nWhat the hell is THAT thing?" + "\n\nShit, That's a fucking ugly cat!" + "\n\nDo you want to fight it?");
+        bridge = new Room("under the bridges" + "\n\nWhat the hell is THAT thing?" + "\n\nShit, That's a fucking ugly cat!" + "\n\nDo you want to fight it?");
        
         
 
