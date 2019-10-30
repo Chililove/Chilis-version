@@ -1,56 +1,59 @@
 
+import java.util.ArrayList;
+
 /**
- *  This class is the main class of the "World of Zuul" application.
- *  "World of Zuul" is a very simple, text based adventure game.  Users
- *  can walk around some scenery. That's all. It should really be extended
- *  to make it more interesting!
+ * This class is the main class of the "World of Zuul" application. "World of
+ * Zuul" is a very simple, text based adventure game. Users can walk around some
+ * scenery. That's all. It should really be extended to make it more
+ * interesting!
  *
- *  To play this game, create an instance of this class and call the "play"
- *  method.
+ * To play this game, create an instance of this class and call the "play"
+ * method.
  *
- *  This main class creates and initialises all the others: it creates all
- *  rooms, creates the parser and starts the game.  It also evaluates and
- *  executes the commands that the parser returns.
+ * This main class creates and initialises all the others: it creates all rooms,
+ * creates the parser and starts the game. It also evaluates and executes the
+ * commands that the parser returns.
  *
- * @author  Michael Kölling and David J. Barnes
+ * @author Michael Kölling and David J. Barnes
  * @version 2011.07.31
  */
-
 public class Game {
 
     private Parser parser;
     private Room currentRoom;
     Room outside, armory, pub, wizhut, bridge, crazyCatRoom;
+    ArrayList<Item> inventory = new ArrayList<Item>();
+
     /**
      * Create the game and initialise its internal map.
      */
     public Game() {
         createRooms();
         parser = new Parser();
-         
+
     }
+
     public static void main(String[] args) {
         Game mygame = new Game();
         mygame.play();
-        
+
     }
+
     /**
      * Create all the rooms and link their exits together.
      */
     private void createRooms() {
-       
 
         // create the rooms
         outside = new Room("outside the town" + "\n\nI think we should head back to town! ^^\n");
         armory = new Room("in the armory" + "Come back later..");
         pub = new Room("in the hidden pub" + "\n\nToo agressive drunken dwarfs comes towards you" + "\n\nDo you want to fight them?\n");
+        //loose/win 30 points - make some random thing to decide if winner or not each time. loose 10 if reply no.
         wizhut = new Room("in the wizards hut" + "\n\nThe wizard offers you a drink" + "\n\nDo you trust him?");
         /*yes - the wizard poisen you, loose 10 point, no - you turn down the drink, gain 10 points.*/
         bridge = new Room("under the bridges" + "\n\nWhat the hell is THAT thing?" + "\n\nShit, That's a fucking ugly cat!" + "\n\nDo you want to fight it?");
-       
-        
+        //every 3rd try the cat will give 35 point, else it makes you sick with plague and drains 15 points.
 
-       
         crazyCatRoom = new Room("in the crazy catwomans den");
 
         // initialise room exits
@@ -60,20 +63,25 @@ public class Game {
         wizhut.setExits(outside, bridge, crazyCatRoom, null);
         armory.setExits(null, null, null, wizhut);
         crazyCatRoom.setExits(null, armory, pub, wizhut);
-        
 
         currentRoom = outside;  // start game outside
+
+        inventory.add(new Item("Spellbook"));
+        inventory.add(new Item("FairyDust"));
+
     }
-       public void timer(){
-             try {
-    for (int i=1;i<=10;i++) {
-      
-      Thread.sleep(500);
-    }
- } catch(InterruptedException e) {
-        e.printStackTrace();
- }
+
+    public void timer() {
+        try {
+            for (int i = 1; i <= 10; i++) {
+
+                Thread.sleep(300);
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
+    }
+
     /**
      * Main play routine. Loops until end of play.
      */
@@ -87,7 +95,7 @@ public class Game {
             Command command = parser.getCommand();
             finished = processCommand(command);
         }
-        System.out.println("Thank you for playing.  Good bye.");
+        System.out.println("\n      Back to reality(^-#).\nSee you soon young adventurer O.o\n");
     }
 
     /**
@@ -95,12 +103,12 @@ public class Game {
      */
     private void printWelcome() {
         System.out.println();
-        System.out.println("Welcome to the World of Chilis!");
-        System.out.println("World of Chilis is a new, incredibly fun adventure game.");
-        System.out.println("Type 'help' if you need help.");
+        System.out.println("       Welcome to the World of Chili!");
+        System.out.println("\nWorld of Chili is a new, incredibly fun adventure game.");
+        System.out.println("\n       Type 'help' if you need help.\n");
         System.out.println();
         System.out.println("You are " + currentRoom.getDescription());
-        System.out.print("Exits: ");
+        System.out.print("Where do you want to go?\n");
         if (currentRoom.northExit != null) {
             System.out.print("north ");
         }
@@ -137,9 +145,22 @@ public class Game {
             goRoom(command);
         } else if (commandWord.equals("quit")) {
             wantToQuit = quit(command);
+        } else if (commandWord.equals("inventory")) {
+            printInventory();
         }
 
         return wantToQuit;
+    }
+
+    private void printInventory() {
+        String output = "";
+        for (int i = 0; i < inventory.size(); i++) {
+            output += inventory.get(i).getDescription() + " ";
+
+            System.out.println("You are carrying:");
+            System.out.println(output);
+
+        }
     }
 
     // implementations of user commands:
@@ -153,8 +174,9 @@ public class Game {
         System.out.println("Watch out for the shadows.\n");
         timer();
         System.out.println("What was that sound?\n");
-        System.out.println("Quick! Make a decision!!:");
-        System.out.println("   go quit help");
+        timer();
+        System.out.println("Quick! Make a decision!!:\n");
+        System.out.println(">go quit help inventory<\n");
     }
 
     /**
@@ -186,11 +208,11 @@ public class Game {
         }
 
         if (nextRoom == null) {
-            System.out.println("There is no door!");
+            System.out.println("There is no way!");
         } else {
             currentRoom = nextRoom;
             System.out.println("You are " + currentRoom.getDescription());
-            System.out.print("Exits: ");
+            System.out.print("Where do you want to go?: ");
             if (currentRoom.northExit != null) {
                 System.out.print("north ");
             }
@@ -221,4 +243,5 @@ public class Game {
             return true;  // signal that we want to quit
         }
     }
+
 }

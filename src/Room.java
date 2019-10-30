@@ -1,3 +1,6 @@
+
+import java.util.ArrayList;
+
 /**
  * Class Room - a room in an adventure game.
  *
@@ -19,6 +22,7 @@ public class Room
     public Room southExit;
     public Room eastExit;
     public Room westExit;
+    ArrayList<Item> items = new ArrayList<Item>();
 
     /**
      * Create a room described "description". Initially, it has
@@ -58,5 +62,25 @@ public class Room
     {
         return description;
     }
+    //get items from room
+    public Item getItem(int index) {
+    return items.get(index);
+    }
+    //set an item in room
+    public void setItem(Item newitem) {
+        items.add(newitem);
+    }
+    
+    //description of items in rooms
+    public String gettRoomItems(){
+        String output = "";
+        for (int i = 0; i < items.size(); i++) {
+            output += items.get(i).getDescription() + " ";
+        }
+            return output;
 
-}
+        }
+    }
+    
+
+
