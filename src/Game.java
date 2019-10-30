@@ -107,7 +107,8 @@ public class Game {
         System.out.println("\nWorld of Chili is a new, incredibly fun adventure game.");
         System.out.println("\n       Type 'help' if you need help.\n");
         System.out.println();
-        System.out.println("You are " + currentRoom.getDescription());
+        printLocationInfo();
+        /*System.out.println("You are " + currentRoom.getDescription());
         System.out.print("Where do you want to go?\n");
         if (currentRoom.northExit != null) {
             System.out.print("north ");
@@ -122,7 +123,10 @@ public class Game {
             System.out.print("west ");
         }
         System.out.println();
-    }
+    }*/
+        
+            
+    }        
 
     /**
      * Given a command, process (that is: execute) the command.
@@ -162,6 +166,24 @@ public class Game {
 
         }
     }
+    private void printLocationInfo()
+        {
+            System.out.println("You are " + currentRoom.getDescription());
+        System.out.print("Where do you want to go?\n");
+        if (currentRoom.northExit != null) {
+            System.out.print("north ");
+        }
+        if (currentRoom.eastExit != null) {
+            System.out.print("east ");
+        }
+        if (currentRoom.southExit != null) {
+            System.out.print("south ");
+        }
+        if (currentRoom.westExit != null) {
+            System.out.print("west ");
+        }
+        System.out.println();
+        }
 
     // implementations of user commands:
     /**
@@ -211,7 +233,8 @@ public class Game {
             System.out.println("There is no way!");
         } else {
             currentRoom = nextRoom;
-            System.out.println("You are " + currentRoom.getDescription());
+            printLocationInfo();
+           /* System.out.println("You are " + currentRoom.getDescription());
             System.out.print("Where do you want to go?: ");
             if (currentRoom.northExit != null) {
                 System.out.print("north ");
@@ -226,9 +249,9 @@ public class Game {
                 System.out.print("west ");
             }
             System.out.println();
-        }
+        }*/
     }
-
+    }
     /**
      * "Quit" was entered. Check the rest of the command to see whether we
      * really quit the game.
